@@ -15,12 +15,12 @@ namespace vk
         void RequireExtension(const char *);
         void RequireFeatures(VkPhysicalDeviceFeatures);
         void Create();
+        VkQueue GetQueue(uint32_t, uint32_t);
         VkQueue GetGraphicsQueue();
       private:
         PhysicalDevice *physicalDevice = nullptr;
         VkDevice device = {};
         std::vector<const char *> requiredExtensions = {};
         VkPhysicalDeviceFeatures requiredFeatures = {};
-        VkQueue graphicsQueue = VK_NULL_HANDLE;
     };
 }

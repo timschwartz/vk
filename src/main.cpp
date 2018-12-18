@@ -20,15 +20,15 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-//    physicalDevice->ShowQueueFamilyProperties();
+    physicalDevice->ShowQueueFamilyProperties();
 //    std::cout << "Physical device extensions:" << std::endl;
 //    physicalDevice->ShowExtensions();
 
-    vk::LogicalDevice *device = nullptr;
-    device = physicalDevice->GetLogicalDevice();
-    device->RequireExtension("VK_KHR_swapchain");
-    device->Create();
+    vk::LogicalDevice *logicalDevice = nullptr;
+    logicalDevice = physicalDevice->GetLogicalDevice();
+    logicalDevice->RequireExtension("VK_KHR_swapchain");
+    logicalDevice->Create();
 
-    VkQueue gq = device->GetGraphicsQueue();
+    VkQueue gq = logicalDevice->GetGraphicsQueue();
     return 0;
 }

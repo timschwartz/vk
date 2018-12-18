@@ -39,17 +39,27 @@ namespace vk
             }
         }
 
-        VkDeviceQueueCreateInfo queueCreateInfo = {};
-        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-        queueCreateInfo.queueFamilyIndex = 0;
-        queueCreateInfo.queueCount = 1;
-        float queuePriority = 1.0f;
-        queueCreateInfo.pQueuePriorities = &queuePriority;
+        // TODO: don't hardcode totalQueueCreateInfos
+        //       don't hardcode queueFamilyIndex
+        //       don't hardcode queueCount 
+        uint32_t totalQueueCreateInfos = 1, counter = 0;
+
+        VkDeviceQueueCreateInfo queueCreateInfo[totalQueueCreateInfos] = {};
+
+        while(counter < totalQueueCreateInfos)
+        {
+            queueCreateInfo[counter].sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+            queueCreateInfo[counter].queueFamilyIndex = 0;
+            queueCreateInfo[counter].queueCount = 1;
+            float queuePriority = 1.0f;
+            queueCreateInfo[counter].pQueuePriorities = &queuePriority;
+            counter++;
+        }
 
         VkDeviceCreateInfo createInfo = {};
         createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        createInfo.pQueueCreateInfos = &queueCreateInfo;
-        createInfo.queueCreateInfoCount = 1;
+        createInfo.pQueueCreateInfos = &queueCreateInfo[0];
+        createInfo.queueCreateInfoCount = totalQueueCreateInfos;
         createInfo.pEnabledFeatures = &this->requiredFeatures;
         createInfo.enabledExtensionCount = this->requiredExtensions.size();
         createInfo.ppEnabledExtensionNames = this->requiredExtensions.data();
@@ -63,13 +73,18 @@ namespace vk
 
     VkQueue LogicalDevice::GetGraphicsQueue()
     {
-        if(this->graphicsQueue == VK_NULL_HANDLE)
-        {
-            vkGetDeviceQueue(this->device, 0, 0, &this->graphicsQueue);
-            if(this->graphicsQueue == VK_NULL_HANDLE)
-                throw std::runtime_error("LogicalDevice::GetGraphicsQueue() Couldn't get graphics queue.");
-        }
-        return this->graphicsQueue;
+        // TODO: Don't hardcode these values. They happen to work on my video card.
+        return this->GetQueue(0, 0);
+    }
+
+    VkQueue LogicalDevice::GetQueue(uint32_t queueFamilyIndex, uint32_t queueIndex)
+    {
+        VkQueue queue;
+        vkGetDeviceQueue(this->device, queueFamilyIndex, queueIndex, &queue);
+
+        if(queue == VK_NULL_HANDLE)
+            throw std::runtime_error("LogicalDevice::GetQueue() couldn't get queue.");
+        return queue;
     }
 
     LogicalDevice::~LogicalDevice()
