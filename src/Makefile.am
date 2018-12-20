@@ -5,4 +5,5 @@ test_LDADD = -lpthread ${VULKAN_LIBS}
 test_SOURCES = main.cpp \
 		Instance.cpp \
 		PhysicalDevice.cpp \
-		LogicalDevice.cpp
+		LogicalDevice.cpp \
+		Queue.cpp

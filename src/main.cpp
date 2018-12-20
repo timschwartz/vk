@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
     vk::Instance *spock = new vk::Instance(PACKAGE_STRING, "none");
 
     spock->RequireExtension("VK_KHR_surface");
+    spock->RequireExtension("VK_KHR_xlib_surface");
     spock->Create();
 
     vk::PhysicalDevice *physicalDevice = nullptr;
@@ -20,7 +21,7 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    physicalDevice->ShowQueueFamilyProperties();
+//    physicalDevice->ShowQueueFamilyProperties();
 //    std::cout << "Physical device extensions:" << std::endl;
 //    physicalDevice->ShowExtensions();
 
@@ -29,6 +30,6 @@ int main(int argc, char *argv[])
     logicalDevice->RequireExtension("VK_KHR_swapchain");
     logicalDevice->Create();
 
-    VkQueue gq = logicalDevice->GetGraphicsQueue();
+    vk::Queue *gq = logicalDevice->GetGraphicsQueue();
     return 0;
 }

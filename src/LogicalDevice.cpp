@@ -71,20 +71,20 @@ namespace vk
         }
     }
 
-    VkQueue LogicalDevice::GetGraphicsQueue()
+    Queue *LogicalDevice::GetGraphicsQueue()
     {
         // TODO: Don't hardcode these values. They happen to work on my video card.
         return this->GetQueue(0, 0);
     }
 
-    VkQueue LogicalDevice::GetQueue(uint32_t queueFamilyIndex, uint32_t queueIndex)
+    Queue *LogicalDevice::GetQueue(uint32_t queueFamilyIndex, uint32_t queueIndex)
     {
         VkQueue queue;
         vkGetDeviceQueue(this->device, queueFamilyIndex, queueIndex, &queue);
 
         if(queue == VK_NULL_HANDLE)
             throw std::runtime_error("LogicalDevice::GetQueue() couldn't get queue.");
-        return queue;
+        return new Queue(queue);
     }
 
     LogicalDevice::~LogicalDevice()

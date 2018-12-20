@@ -6,3 +6,4 @@
 #include "Instance.h"
 #include "PhysicalDevice.h"
 #include "LogicalDevice.h"
+#include "Queue.h"
